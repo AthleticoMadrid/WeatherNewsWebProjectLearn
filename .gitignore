@@ -1,0 +1,6 @@
+__pycache__/
+arenv/
+textes/
+config.py
+.vscode/
+webapp/python.org.html
