@@ -1,5 +1,9 @@
+from datetime import datetime
+
 import requests
 from bs4 import BeautifulSoup   #библиотека для парсинга
+
+from webapp.model import db, News
 
 def get_html(url):
     try:
@@ -23,11 +27,16 @@ def get_python_news():
             title = news.find('a').text     #получаем тексты новостей
             url = news.find('a')['href']   #получаем ссылки новостей
             published = news.find('time').text      #получаем дату публикации
-            result_news.append({            #положим полученные данные в словарь
-                "title": title,
-                "url": url,
-                "published": published
-            })
-        return result_news      #если страница получена, то: result_news - список словарей 
-    return False    #иначе False
+            try:
+                published = datetime.strptime(published, '%Y-%m-%d')     #strptime: парсит строку по заданому ей формату
+            except ValueError:
+                published = datetime.now()      #текущую дату и время
+            save_news(title, url, published)
 
+def save_news(title, url, published):
+    news_exists = News.query.filter(News.url == url).count()       #возможность ограничить выборку(выполнив подсчёт объектов подходящих под условие)
+    print(news_exists)
+    if not news_exists:
+        new_news = News(title=title, url=url, published=published)      #параметры новой новости
+        db.session.add(new_news)    #добавление новости в бд
+        db.session.commit()         #сохранение новости в бд

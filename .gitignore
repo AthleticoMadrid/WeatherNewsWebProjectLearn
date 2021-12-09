@@ -4,3 +4,4 @@ textes/
 config.py
 .vscode/
 webapp/python.org.html
+*.db
