@@ -1,7 +1,4 @@
-from enum import unique
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()       #инициализация базы данных
+from webapp.db import db
 
 class News(db.Model):
     id = db.Column(db.Integer, primary_key=True)        #идентификатор новости
