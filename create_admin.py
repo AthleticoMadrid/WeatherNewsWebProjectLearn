@@ -5,6 +5,7 @@ from webapp import create_app
 from webapp.db import db
 from webapp.user.models import User
 
+
 app = create_app()
 
 with app.app_context():         #доступ для работы с бд
