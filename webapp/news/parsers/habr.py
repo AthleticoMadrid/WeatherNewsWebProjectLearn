@@ -9,7 +9,7 @@ def get_habr_snippets():
     html = get_html("https://habr.com/ru/search/?q=python&target_type=posts&order=date")    #наша функция идёт по ссылке и получает страницу
     if html:
         soup = BeautifulSoup(html, 'html.parser')       #теперь soup - преобразованный html
-        all_news = soup.find('article', class_='tm-articles-list__item').findAll('div', class_='tm-article-snippet')      #ищем нужный нам класс с новостями и с публикациями
+        all_news = soup.find('div', class_='tm-articles-list').findAll('article', class_='tm-articles-list__item')      #ищем нужный нам класс со всеми новостями на странице ('div') и с каждой публикацией отдельно ('article')
         for news in all_news:
             title = news.find('a', class_='tm-article-snippet__title-link').text     #получаем заголовки статей
             url = news.find('a', class_='tm-article-snippet__title-link')['href']   #получаем ссылки у статей
