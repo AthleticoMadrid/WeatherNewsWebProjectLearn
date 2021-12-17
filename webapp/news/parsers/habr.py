@@ -46,7 +46,7 @@ def get_news_content():
         html = get_html(news.url)
         if html:
             soup = BeautifulSoup(html, 'html.parser')
-            news_text = soup.find('div', class_='tm-article-body').decode_contents()    #возьмём текст с новости
+            news_text = soup.find('div', class_='tm-articles-list').decode_contents()    #возьмём текст с новости
             if news_text:
                 news.text = news_text
                 db.session.add(news)
