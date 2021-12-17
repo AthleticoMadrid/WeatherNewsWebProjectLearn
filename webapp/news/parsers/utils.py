@@ -20,6 +20,6 @@ def save_news(title, url, published):
     news_exists = News.query.filter(News.url == url).count()       #возможность ограничить выборку(выполнив подсчёт объектов подходящих под условие)
     print(news_exists)
     if not news_exists:
-        news_news = News(title=title, url=url, published=published)      #параметры новой новости
-        db.session.add(news_news)    #добавление новости в бд
+        new_news = News(title=title, url=url, published=published)      #параметры новой новости
+        db.session.add(new_news)    #добавление новости в бд
         db.session.commit()         #сохранение новости в бд
