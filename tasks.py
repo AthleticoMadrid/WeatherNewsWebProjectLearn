@@ -1,5 +1,6 @@
 #файл задач (tasks) для Celery
 from celery import Celery
+from celery.schedules import crontab                #модуль ищущий новости по заданным временным промежуткам
 
 from webapp import create_app
 from webapp.news.parsers import habr
@@ -17,10 +18,7 @@ def habr_content():                                         #статьи нов
     with flask_app.app_context():
         habr.get_news_content()
 
-#запуск Celery на Windows (после включения подсистемы Linux для Windows):
-#            set FORKED_BY_MULTIPROCESSING=1 && celery -A tasks worker --loglevel=info
-
-#в новом терминале активируем вирт.окружение и запускаем: python
-#                                           далее:        from tasks import add     #где add - имя функции (напр.: habr_snippets, habr_content)
-#чтобы начать работу с Celery (нужен delay):              add.delay(2, 2)
-#                                                         <AsyncResult: 6af8eb86-d904-4251-9aa7-b8580ebfccdf>
+@celery_app.on_after_configure.connect
+def setup_periodic_tasks(sender, **kwargs):
+    sender.add_periodic_task(crontab(minute='*/1'), habr_snippets.s())
+    sender.add_periodic_task(crontab(minute='*/2'), habr_content.s())

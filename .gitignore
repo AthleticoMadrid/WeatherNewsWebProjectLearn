@@ -5,3 +5,4 @@ config.py
 .vscode/
 webapp/python.org.html
 *.db
+celerybeat-schedule.*
